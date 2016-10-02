@@ -1,0 +1,63 @@
+&When did WW2 began?
+*1939
+1941
+*1942
+1989
+&Do you usually feel well and strong? 
+ *YES   
+NO 
+
+&Do you usually sleep well? 
+* YES   
+NO 
+
+&Are you often frightened in the middle of the night? 
+* YES   
+NO 
+
+&
+&Are you troubled with dreams about your work? 
+* YES   
+NO 
+
+&Do you have nightmares? 
+ YES   
+*NO 
+
+&Do you have too many sexual dreams? 
+ YES   
+*NO 
+
+&Do you ever walk in your sleep? 
+* YES   
+NO 
+&
+&Do you have the sensation of falling when going to sleep? 
+ *YES   
+NO 
+
+&Does your heart ever thump in your ears so that you cannot sleep? 
+ YES   
+*NO 
+
+
+
+&Do ideas run through your head so that you cannot sleep? 
+* YES   
+NO 
+&
+Do you feel well rested in the morning? 
+ *YES   
+NO 
+
+&Do your eyes often pain you? 
+ 
+*NO 
+
+&Do things ever seem to swim or get misty before your eyes? 
+ YES   
+*NO 
+
+&Do you often have the feeling of suffocating? 
+* YES   
+NO 
