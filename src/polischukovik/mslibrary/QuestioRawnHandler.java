@@ -59,14 +59,14 @@ public class QuestioRawnHandler {
 			String rawAnswers = item.substring(item.indexOf("\n")).trim();
 			//yes, no, maybe
 			String[] a = rawAnswers.split("\n");
-			int[] correctAnswerId = new int[0];
+			Integer[] correctAnswerId = new Integer[0];
 			
 			for(int j = 0; j < a.length; j++){
 				int index = (a[j].indexOf("*"));
 				if(index >= 0){
 					a[j] = a[j].substring(index+1);
-					int[] tmp = correctAnswerId;
-					correctAnswerId = new int[correctAnswerId.length + 1];
+					Integer[] tmp = correctAnswerId;
+					correctAnswerId = new Integer[correctAnswerId.length + 1];
 					System.arraycopy(tmp, 0, correctAnswerId, 0, tmp.length);
 					
 					correctAnswerId[correctAnswerId.length - 1] = j;

@@ -6,13 +6,25 @@ public class QuestionRaw {
 	private Question.TYPE type;
 	private String question;
 	private String[] answers;
-	private int[] correct;
-	public QuestionRaw(TYPE type, String question, String[] answers, int[] correct) {
+	private Integer[] correct;
+	public QuestionRaw(TYPE type, String question, String[] answers, Integer[] correct) {
 		super();
 		this.type = type;
 		this.question = question;
 		this.answers = answers;
 		this.correct = correct;
+	}
+	public Question.TYPE getType() {
+		return type;
+	}
+	public String getQuestion() {
+		return question;
+	}
+	public String[] getAnswers() {
+		return answers;
+	}
+	public Integer[] getCorrect() {
+		return correct;
 	}
 	
 	

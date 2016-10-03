@@ -14,11 +14,12 @@ public class Question {
 		CORRESPONSANCE
 	}
 	
-	private int id;
+	private String id;
 	private TYPE type;
 	private String question;
 	private List<Answer> answers;
-	public Question(int id, TYPE type, String question, String[] answers, int[] correctAnswers) {
+	//public Question(int id, TYPE type, String question, String[] answers, int[] correctAnswers) {
+	public Question(String id, TYPE type, String question, List<Answer> answers) {
 		super();
 		this.id = id;
 		this.type = type;
@@ -26,13 +27,14 @@ public class Question {
 		
 		this.answers = new ArrayList<>();
 		Numerator nums = new Numerator(Numerator.TYPE.NUMERIC);
-		List<Integer> corr = new ArrayList<>();
-		for(int i = 0; i < correctAnswers.length; i++){
-			corr.add(correctAnswers[i]);
-		}
+//		List<Integer> corr = new ArrayList<>();
+//		for(int i = 0; i < correctAnswers.length; i++){
+//			corr.add(correctAnswers[i]);
+//		}
 		
-		for(int i = 0; i < answers.length; i++){
-			this.answers.add(new Answer(answers[i], corr.contains(answers[i]), nums.getNext()));
+		for(int i = 0; i < answers.size(); i++){
+			//this.answers.add(new Answer(answers[i], corr.contains(answers[i]), nums.getNext()));
+			this.answers.add(answers.get(i));
 		}
 	}
 

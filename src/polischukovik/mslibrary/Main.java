@@ -19,6 +19,8 @@ public class Main {
 	private static boolean MIX_ANSWERS = true;
 	//output
 	private static String FILENAME = "tests.docx";
+	//test name
+	private static String TEST_NAME = "Теорія держави і права";
 	
 	private static Set<QuestionRaw> questions;
 	
@@ -32,6 +34,7 @@ public class Main {
 		prop.add(Properties.NAMES.QUESTIONS, String.valueOf(QUESTIONS));
 		prop.add(Properties.NAMES.MIX_ANSWERS, MIX_ANSWERS ? "1" : "0");
 		prop.add(Properties.NAMES.OUTPUT_FILE_NAME, FILENAME);
+		prop.add(Properties.NAMES.TEST_NAME, TEST_NAME);
 		
 	
 		questions = QuestioRawnHandler.parseSource(sourceFilePath, prop);
@@ -41,7 +44,7 @@ public class Main {
 		Test test = tf.createTests(prop);
 		
 		
-		System.err.println();
+		System.err.println(test);
 		//DocumentCompieler dc = new DocumentCompieler(questions);
 		
 		//dc.compile(prop);

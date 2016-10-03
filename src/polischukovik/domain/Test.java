@@ -1,5 +1,6 @@
 package polischukovik.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -13,6 +14,7 @@ public class Test {
 		super();
 		this.caption = caption;
 		this.variantNumber = 0;
+		this.variants = new ArrayList<>();
 	}
 	
 	/*
