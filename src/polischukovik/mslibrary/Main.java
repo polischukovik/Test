@@ -6,8 +6,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Set;
 
+import org.apache.poi.xwpf.usermodel.BreakType;
+import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
 
 import polischukovik.domain.Question;
 import polischukovik.domain.QuestionRaw;
@@ -49,22 +52,54 @@ public class Main {
 	
 		questions = QuestioRawnHandler.parseSource(sourceFilePath, prop);
 		
-		TestFactory tf = new TestFactory(questions);
-		 
-		Test test = tf.createTests(prop);
-		
-		DocumentFactory df = new DocumentFactory(test, prop);
+//		TestFactory tf = new TestFactory(questions);
+//		 
+//		Test test = tf.createTests(prop);
+//		
+//		DocumentFactory df = new DocumentFactory(test, prop);
+//
 
-		OutputStream os = new FileOutputStream(new File("file.docx"));
-		df.write(os);
+		try(OutputStream os = new FileOutputStream(new File("file.docx"))){
 		
+		//df.write(os);
+		XWPFDocument doc = new XWPFDocument();
 		
+		XWPFParagraph p = doc.createParagraph();
+		p.setAlignment(ParagraphAlignment.CENTER);
+		XWPFRun r = p.createRun();
+		r.addBreak();
+		r.addBreak();
+		r.addBreak();
+		r.addBreak();
+		r.setText("\n\n\n\n\nDocument caption");		
+		r.addBreak();		
+
+		r.addBreak(BreakType.PAGE);
+		//////////////////////////
+		XWPFParagraph p0 = doc.createParagraph();
+		XWPFRun r0 = p0.createRun();
+		p0.setAlignment(ParagraphAlignment.CENTER);
+		
+		String v_label = "II";
+		String v_mark = "Variant";
+		r0.setText(String.format("%s %s", v_mark, v_label));
+		r0.setBold(true);
+		/////////////////////////
+		XWPFParagraph p1 = doc.createParagraph();
+		XWPFRun r1 = p1.createRun();
+		
+		String q_label = "1";
+		String question = "What is your question?";
+		r1.setText("What is your question?");
+		
+		doc.write(os);
+		}catch(Exception e){
+			System.err.println("Error occured");
+			e.printStackTrace();
+			return;
+		}
 		System.err.println("done");
-		//DocumentCompieler dc = new DocumentCompieler(questions);
-		
-		//dc.compile(prop);
-		
-		
+	
 	}
 
 
