@@ -24,6 +24,15 @@ public class Test {
 		variants.add(variant);
 		++variantNumber;
 	}
+
+	public String getCaption() {
+		return caption;
+	}
+
+	public List<Variant> getVariants() {
+		return variants;
+	}
+	
 	
 
 }

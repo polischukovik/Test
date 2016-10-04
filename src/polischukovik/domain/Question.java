@@ -35,6 +35,18 @@ public class Question {
 				+ question + "\n"
 				+ answers;
 	}
+	public String getId() {
+		return id;
+	}
+	public TYPE getType() {
+		return type;
+	}
+	public String getQuestion() {
+		return question;
+	}
+	public List<Answer> getAnswers() {
+		return answers;
+	}
 
 	
 	

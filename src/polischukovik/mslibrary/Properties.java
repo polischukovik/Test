@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class Properties {
 	
-	public static enum NAMES {VARIANTS,QUESTIONS,MARK,MIX_ANSWERS, OUTPUT_FILE_NAME, TEST_NAME};
+	public static enum NAMES {VARIANTS,QUESTIONS,MARK,MIX_ANSWERS, OUTPUT_FILE_NAME, TEST_NAME, QUESTION_PUNCTUATION, ANSWER_PUNCTUATION};
 	private Map<NAMES, String> properties;
 	
 	public Properties() {

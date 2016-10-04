@@ -13,6 +13,16 @@ public class Answer {
 		//this.isCorrect = isCorrect;
 		this.label = label;
 	}
+
+	public String getAnswer() {
+		return answer;
+	}
+
+	public String getLabel() {
+		return label;
+	}
+	
+	
 	
 	
 }

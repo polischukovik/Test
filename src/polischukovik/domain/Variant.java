@@ -42,4 +42,18 @@ public class Variant {
 		questions.add(question);
 		++questionNumber;
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	public List<Question> getQuestions() {
+		return questions;
+	}
+
+	public Map<String, List<String>> getKeys() {
+		return keys;
+	}
+	
+	
 }
