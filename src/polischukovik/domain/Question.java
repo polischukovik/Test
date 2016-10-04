@@ -27,15 +27,13 @@ public class Question {
 		
 		this.answers = new ArrayList<>();
 		Numerator nums = new Numerator(Numerator.TYPE.NUMERIC);
-//		List<Integer> corr = new ArrayList<>();
-//		for(int i = 0; i < correctAnswers.length; i++){
-//			corr.add(correctAnswers[i]);
-//		}
-		
-		for(int i = 0; i < answers.size(); i++){
-			//this.answers.add(new Answer(answers[i], corr.contains(answers[i]), nums.getNext()));
-			this.answers.add(answers.get(i));
-		}
+		this.answers = answers;
+	}
+	@Override
+	public String toString() {
+		return "Question id=" + id + ", type=" + type + "\n"
+				+ question + "\n"
+				+ answers;
 	}
 
 	

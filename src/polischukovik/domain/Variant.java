@@ -12,7 +12,7 @@ public class Variant {
 	private String name;
 	private List<Question> questions;
 	private int questionNumber;
-	private Map<String, List<String>> keys;
+	private Map<String, List<String>> keys; //could be <Question, List<String>>>
 	
 	public Variant(String name, List<QuestionRaw> newVariant) {
 		super();
@@ -33,6 +33,7 @@ public class Variant {
 				answers.add(new Answer(answerRaw[i], answerNums.getNext()));
 			}
 			Question prep = new Question(nums.getNext(), q.getType(), q.getQuestion(), answers);
+			add(prep);
 		}
 		
 	}
