@@ -7,7 +7,7 @@ public class Answer {
 	private String label;
 	
 //	public Answer(String answer, boolean isCorrect, String label) {
-	public Answer(String answer, String label) {
+	public Answer(String label, String answer) {
 		super();
 		this.answer = answer;
 		//this.isCorrect = isCorrect;

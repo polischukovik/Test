@@ -36,8 +36,15 @@ public class QuestioRawnHandler {
 	}
 	
 	public static void processRawData(Set<QuestionRaw> questions){	
-
-		String[] rawQ = questionData.split(prop.get(Properties.NAMES.MARK));
+		String pMark;
+		try {
+			pMark = prop.get(Properties.NAMES.MARK);
+		}catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+		
+		String[] rawQ = questionData.split(pMark);
 		
 		//remove whitespaces;
 		for(int i = 0; i < rawQ.length; i++){

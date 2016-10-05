@@ -5,8 +5,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import javax.naming.directory.InvalidAttributesException;
+
 import polischukovik.mslibrary.Numerator;
+import polischukovik.mslibrary.Properties;
 import polischukovik.mslibrary.Numerator.TYPE;
+import polischukovik.mslibrary.TestFactory;
 
 public class Variant {
 	private String name;
@@ -19,18 +23,23 @@ public class Variant {
 		this.name = name;
 		questionNumber = 0;
 		questions = new ArrayList<>();
-		Numerator nums = new Numerator(TYPE.NUMERIC);
+		/*
+		 * Set question numeration style
+		 */
+		Numerator nums = new Numerator(TestFactory.getNumerationStyle(Numerator.TYPE.NUMERIC, Properties.NAMES.P_QUESTION_NUMERATION));
 		
 		for(QuestionRaw q : newVariant){
 			List<Answer> answers = new ArrayList<>();
 			String[] answerRaw = q.getAnswers();
 			Integer [] correct = q.getCorrect();
 			List<Integer> correctList = Arrays.asList(correct);
-			
-			Numerator answerNums = new Numerator(TYPE.NUMERIC);
+			/*
+			 * Set answer numeration style
+			 */
+			Numerator answerNums = new Numerator(TestFactory.getNumerationStyle(Numerator.TYPE.ALPHABETIC, Properties.NAMES.P_ANSWER_NUMERATION));
 			
 			for(int i = 0; i < answerRaw.length; i++){
-				answers.add(new Answer(answerRaw[i], answerNums.getNext()));
+				answers.add(new Answer(answerNums.getNext(), answerRaw[i] ));
 			}
 			Question prep = new Question(nums.getNext(), q.getType(), q.getQuestion(), answers);
 			add(prep);
@@ -54,6 +63,5 @@ public class Variant {
 	public Map<String, List<String>> getKeys() {
 		return keys;
 	}
-	
 	
 }

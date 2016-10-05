@@ -31,12 +31,19 @@ public class Main {
 	//output
 	private static final String FILENAME = "tests.docx";
 	//test name
-	private static final String TEST_NAME = "Тести для групи продовженого дня ЫИПРАТ";
+	private static final String TEST_NAME = "Назва тесту";
+	private static final String VARIANT_NAME = "Варіант";
+	private static final String F_QUESTION_BOLD = "Y";
+	private static final String F_QUESTION_SPACING = "y";
+	private static final String P_VARIANT_NUMERATION = "ROMAN";
+	private static final String P_QUESTION_NUMERATION = "NUMERIC";
+	private static final String P_ANSWER_NUMERATION = "ALPHABETIC";
+	
 	
 	private static Set<QuestionRaw> questions;
 	
 	//C:\Users\opolishc\workspaceNeon\ms-document-testimg
-	private static String sourceFilePath = "source.txt";
+	private static String sourceFilePath = "source_.txt";
 
 	public static void main(String[] args) throws IOException {
 		Properties prop = new Properties();
@@ -48,59 +55,42 @@ public class Main {
 		prop.add(Properties.NAMES.TEST_NAME, TEST_NAME);
 		prop.add(Properties.NAMES.ANSWER_PUNCTUATION, ANSWER_PUNCTUATION);
 		prop.add(Properties.NAMES.QUESTION_PUNCTUATION, QUESTION_PUNCTUATION);
+		prop.add(Properties.NAMES.VARIANT_NAME, VARIANT_NAME);
+		prop.add(Properties.NAMES.F_QUESTION_BOLD, F_QUESTION_BOLD);
+		prop.add(Properties.NAMES.F_QUESTION_SPACING, F_QUESTION_SPACING);
+//		prop.add(Properties.NAMES.P_VARIANT_NUMERATION, P_VARIANT_NUMERATION);
+//		prop.add(Properties.NAMES.P_QUESTION_NUMERATION, P_QUESTION_NUMERATION);
+//		prop.add(Properties.NAMES.P_ANSWER_NUMERATION, P_ANSWER_NUMERATION);
 		
 	
 		questions = QuestioRawnHandler.parseSource(sourceFilePath, prop);
 		
-//		TestFactory tf = new TestFactory(questions);
-//		 
-//		Test test = tf.createTests(prop);
-//		
-//		DocumentFactory df = new DocumentFactory(test, prop);
-//
+		TestFactory tf = new TestFactory(questions);
+		 
+		Test test = tf.createTests(prop);
+		
+		if(test == null){
+			System.err.println("Failed to generate test. Exiting");
+			return;
+		}
+		
+		DocumentFactory df = new DocumentFactory(test, prop);
 
 		try(OutputStream os = new FileOutputStream(new File("file.docx"))){
 		
-		//df.write(os);
-		XWPFDocument doc = new XWPFDocument();
-		
-		XWPFParagraph p = doc.createParagraph();
-		p.setAlignment(ParagraphAlignment.CENTER);
-		XWPFRun r = p.createRun();
-		r.addBreak();
-		r.addBreak();
-		r.addBreak();
-		r.addBreak();
-		r.setText("\n\n\n\n\nDocument caption");		
-		r.addBreak();		
+			df.write(os);
 
-		r.addBreak(BreakType.PAGE);
-		//////////////////////////
-		XWPFParagraph p0 = doc.createParagraph();
-		XWPFRun r0 = p0.createRun();
-		p0.setAlignment(ParagraphAlignment.CENTER);
-		
-		String v_label = "II";
-		String v_mark = "Variant";
-		r0.setText(String.format("%s %s", v_mark, v_label));
-		r0.setBold(true);
-		/////////////////////////
-		XWPFParagraph p1 = doc.createParagraph();
-		XWPFRun r1 = p1.createRun();
-		
-		String q_label = "1";
-		String question = "What is your question?";
-		r1.setText("What is your question?");
-		
-		doc.write(os);
 		}catch(Exception e){
 			System.err.println("Error occured");
 			e.printStackTrace();
 			return;
 		}
+		
 		System.err.println("done");
 	
 	}
+
+	
 
 
 }
