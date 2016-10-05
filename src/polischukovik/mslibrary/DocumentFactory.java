@@ -29,20 +29,17 @@ public class DocumentFactory {
 	String pQuestionPunctuation;
 	boolean pFQuestionBold;
 	String pAnswerPuncuation;
+	boolean pQuestionSpacing;
 
 	public DocumentFactory(Test test, Properties prop) {
 		this.test = test;
 		this.prop = prop;
 		try {
-			pMark = prop.get(Properties.NAMES.VARIANT_NAME);
-			pQuestionPunctuation = prop.get(NAMES.QUESTION_PUNCTUATION);
-			pFQuestionBold = true;
-			boolean bold = true;
-			if(paramBold != null && (paramBold.toLowerCase().equals("y") || (paramBold.toLowerCase().equals("n")))){
-				bold = "y".equals(paramBold.toLowerCase());
-			}	
-			pFQuestionBold = Boolean.valueOf(prop.get(Properties.NAMES.F_QUESTION_BOLD));
-			pAnswerPuncuation
+			pMark = prop.get(Properties.NAMES.VARIANT_NAME, "Variant");
+			pQuestionPunctuation = prop.get(Properties.NAMES.QUESTION_PUNCTUATION, ".");
+			pFQuestionBold = prop.getBoolean(Properties.NAMES.F_QUESTION_BOLD, false);			
+			pAnswerPuncuation = prop.get(NAMES.ANSWER_PUNCTUATION, ")");
+			pQuestionSpacing = prop.getBoolean(Properties.NAMES.F_QUESTION_SPACING, false);
 		}catch (Exception e) {
 			e.printStackTrace();
 			return;
@@ -99,6 +96,7 @@ public class DocumentFactory {
 			List<Question> questions = v.getQuestions();
 			for(Question q : questions){
 				XWPFParagraph questionParagpaph = doc.createParagraph();
+
 				setSingleLineSpacing(questionParagpaph);
 				//questionParagpaph.setAlignment(ParagraphAlignment.CENTER);
 				//questionParagpaph.setPageBreak(true);
@@ -108,38 +106,34 @@ public class DocumentFactory {
 				/*
 				 * Set question Run to bold if parameter presented
 				 */
-				boolean bold = true;
-				String paramBold = ;
-				if(paramBold != null && (paramBold.toLowerCase().equals("y") || (paramBold.toLowerCase().equals("n")))){
-					bold = "y".equals(paramBold.toLowerCase());
-				}				
-				questionRun.setBold(bold);
+							
+				questionRun.setBold(pFQuestionBold);
 				
 				List<Answer> answers = q.getAnswers();		
 				XWPFParagraph answerParagraph = doc.createParagraph();
 				/*
 				 * Remove spacing between paragraphs
 				 */
-				String paramSpacing = prop.get(Properties.NAMES.F_QUESTION_SPACING);
-				if(paramSpacing != null && paramSpacing.toLowerCase().equals("y")){
+				if(pQuestionSpacing){
 					setSingleLineSpacing(answerParagraph);
 				}
-				
+
 				for(int i = 0; i < answers.size(); i++){
 					Answer a = answers.get(i);
 					XWPFRun answerRun = answerParagraph.createRun();
 					
-					answerRun.setText(String.format("%s%s %s", a.getLabel(), prop.get(NAMES.ANSWER_PUNCTUATION), a.getAnswer()));
+					answerRun.setText(String.format("%s%s %s", a.getLabel(), pAnswerPuncuation, a.getAnswer()));
 					
 					if(i != answers.size() - 1){
 						answerRun.addBreak();
-					}					
+					}	
 				}
 			}			
 			
 			
 		}
 	}
+
 	
 	public void setSingleLineSpacing(XWPFParagraph para) {
 	    CTPPr ppr = para.getCTP().getPPr();

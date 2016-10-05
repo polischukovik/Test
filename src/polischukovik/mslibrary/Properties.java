@@ -11,6 +11,7 @@ import polischukovik.mslibrary.Numerator.TYPE;
 public class Properties {
 	
 	public static enum NAMES {VARIANTS,QUESTIONS,MARK,MIX_ANSWERS, OUTPUT_FILE_NAME, TEST_NAME, QUESTION_PUNCTUATION, ANSWER_PUNCTUATION, VARIANT_NAME, F_QUESTION_BOLD, F_QUESTION_SPACING, P_VARIANT_NUMERATION, P_QUESTION_NUMERATION, P_ANSWER_NUMERATION};
+
 	private Map<NAMES, String> properties;
 //	private final static TreeMap<String, NAMES> namingMap = new TreeMap<>();
 //	
@@ -41,7 +42,7 @@ public class Properties {
 		properties.put(nameEnum, value);
 	}
 
-	public String get(NAMES nameEnum) throws InvalidAttributesException{	
+	public String get(NAMES nameEnum, String defaultVal) throws InvalidAttributesException{	
 		String value = properties.get(nameEnum);
 		
 		if(value == null) throw new InvalidAttributesException(String.format("Option [%s] value not found.", nameEnum.toString()));
@@ -52,6 +53,18 @@ public class Properties {
 
 	public static void loadDefaultProperties() {
 		// TODO Auto-generated method stub
+		
+	}
+	
+	public boolean getBoolean(Properties.NAMES prop, boolean defaultVal) throws InvalidAttributesException{
+		String param = this.properties.get(prop);
+		boolean pBool = false;
+		if(param.toLowerCase().equals("y") || (param.toLowerCase().equals("n"))){
+			pBool = "y".equals(param.toLowerCase());
+		}else{
+			throw new IllegalArgumentException(String.format("Cannot convert [%s] to boolean(y/n are permited)", prop.toString()));
+		}
+		return pBool;
 		
 	}
 }

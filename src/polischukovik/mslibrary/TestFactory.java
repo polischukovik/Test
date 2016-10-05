@@ -27,8 +27,8 @@ public class TestFactory {
 	public Test createTests(Properties prop) {
 		TestFactory.prop = prop;
 		try {
-			pTestName = TestFactory.prop.get(Properties.NAMES.TEST_NAME);
-			pVariants = Integer.valueOf(TestFactory.prop.get(Properties.NAMES.VARIANTS));
+			pTestName = TestFactory.prop.get(Properties.NAMES.TEST_NAME, "Test name default");
+			pVariants = Integer.valueOf(TestFactory.prop.get(Properties.NAMES.VARIANTS, "2"));
 		}catch (NumberFormatException e) {
 			System.err.println("ERROR: Failed to convert property to numeric");
 			return null;
@@ -65,7 +65,7 @@ public class TestFactory {
 	public static Numerator.TYPE getNumerationStyle(Numerator.TYPE defaultStyle, Properties.NAMES property) {
 		Numerator.TYPE numStyle = defaultStyle; //DEFAULT
 		try{
-			String propNumerationStyle = TestFactory.getProperties().get(property);
+			String propNumerationStyle = TestFactory.getProperties().get(property, defaultStyle.toString());
 			if(propNumerationStyle == null){
 				throw new IllegalArgumentException(String.format("Warning: There is no property %s. Using default",property));
 			}

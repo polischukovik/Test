@@ -6,12 +6,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Set;
 
-import org.apache.poi.xwpf.usermodel.BreakType;
-import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFRun;
-
 import polischukovik.domain.Question;
 import polischukovik.domain.QuestionRaw;
 import polischukovik.domain.Test;
@@ -38,7 +32,7 @@ public class Main {
 	private static final String P_VARIANT_NUMERATION = "ROMAN";
 	private static final String P_QUESTION_NUMERATION = "NUMERIC";
 	private static final String P_ANSWER_NUMERATION = "ALPHABETIC";
-	
+
 	
 	private static Set<QuestionRaw> questions;
 	
@@ -61,6 +55,7 @@ public class Main {
 //		prop.add(Properties.NAMES.P_VARIANT_NUMERATION, P_VARIANT_NUMERATION);
 //		prop.add(Properties.NAMES.P_QUESTION_NUMERATION, P_QUESTION_NUMERATION);
 //		prop.add(Properties.NAMES.P_ANSWER_NUMERATION, P_ANSWER_NUMERATION);
+
 		
 	
 		questions = QuestioRawnHandler.parseSource(sourceFilePath, prop);
@@ -72,8 +67,8 @@ public class Main {
 		if(test == null){
 			System.err.println("Failed to generate test. Exiting");
 			return;
-		}
-		
+		}		
+
 		DocumentFactory df = new DocumentFactory(test, prop);
 
 		try(OutputStream os = new FileOutputStream(new File("file.docx"))){
@@ -89,8 +84,5 @@ public class Main {
 		System.err.println("done");
 	
 	}
-
-	
-
 
 }

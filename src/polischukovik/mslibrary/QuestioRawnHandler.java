@@ -38,7 +38,7 @@ public class QuestioRawnHandler {
 	public static void processRawData(Set<QuestionRaw> questions){	
 		String pMark;
 		try {
-			pMark = prop.get(Properties.NAMES.MARK);
+			pMark = prop.get(Properties.NAMES.MARK, "&");
 		}catch (Exception e) {
 			e.printStackTrace();
 			return;
