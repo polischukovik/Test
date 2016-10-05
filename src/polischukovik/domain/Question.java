@@ -2,7 +2,9 @@ package polischukovik.domain;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import polischukovik.mslibrary.Numerator;
 
@@ -26,15 +28,13 @@ public class Question {
 		this.question = question;
 		
 		this.answers = new ArrayList<>();
-		Numerator nums = new Numerator(Numerator.TYPE.NUMERIC);
 		this.answers = answers;
 	}
-	@Override
-	public String toString() {
-		return "Question id=" + id + ", type=" + type + "\n"
-				+ question + "\n"
-				+ answers;
+	
+	public void shuffleAnswers(Random rnd){
+		Collections.shuffle(answers, rnd);		
 	}
+	
 	public String getId() {
 		return id;
 	}

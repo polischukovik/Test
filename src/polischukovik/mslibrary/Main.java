@@ -17,7 +17,7 @@ public class Main {
 	//THe number of resulting variants
 	private static final int VARIANTS= 4;
 	//The number of questions in each variant
-	private static final int QUESTIONS = 5;
+	private static final int QUESTIONS = 27;
 	//Question mark
 	private static final String MARK = "&";
 	//Flag to mix answers. Default true
@@ -25,13 +25,15 @@ public class Main {
 	//output
 	private static final String FILENAME = "tests.docx";
 	//test name
-	private static final String TEST_NAME = "Назва тесту";
-	private static final String VARIANT_NAME = "Варіант";
+	private static final String TEST_NAME = "РќР°Р·РІР° С‚РµСЃС‚Сѓ";
+	private static final String VARIANT_NAME = "Р’Р°СЂС–Р°РЅС‚";
 	private static final String F_QUESTION_BOLD = "Y";
 	private static final String F_QUESTION_SPACING = "y";
 	private static final String P_VARIANT_NUMERATION = "ROMAN";
 	private static final String P_QUESTION_NUMERATION = "NUMERIC";
 	private static final String P_ANSWER_NUMERATION = "ALPHABETIC";
+	private static final String SHUFFLE_QUESTIONS = "y";
+	private static final String SHUFFLE_ANSWERS = "y";
 
 	
 	private static Set<QuestionRaw> questions;
@@ -55,8 +57,8 @@ public class Main {
 		prop.add(Properties.NAMES.P_VARIANT_NUMERATION, P_VARIANT_NUMERATION);
 		prop.add(Properties.NAMES.P_QUESTION_NUMERATION, P_QUESTION_NUMERATION);
 		prop.add(Properties.NAMES.P_ANSWER_NUMERATION, P_ANSWER_NUMERATION);
-
-		
+		prop.add(Properties.NAMES.SHUFFLE_ANSWERS, SHUFFLE_ANSWERS);
+		prop.add(Properties.NAMES.SHUFFLE_QUESTION, SHUFFLE_QUESTIONS);
 	
 		questions = QuestioRawnHandler.parseSource(sourceFilePath, prop);
 		

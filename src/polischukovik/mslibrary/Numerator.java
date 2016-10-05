@@ -84,10 +84,10 @@ public class Numerator {
         return romanDictMap.get(l) + toRoman(number-l);
     }
     
-    public static TYPE valueOf(String str) throws InvalidAttributesException{ 
+    public static TYPE valueOf(String str)  { 
     	TYPE type = namingMap.get(str);
     	
-    	if(type == null) throw new InvalidAttributesException(String.format("Unaccepable value %s.", str));
+    	if(type == null) return null;// throw new InvalidAttributesException(String.format("Unaccepable value %s.", str));
     	
     	return type;		
     }
