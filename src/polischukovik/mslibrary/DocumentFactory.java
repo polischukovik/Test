@@ -34,16 +34,13 @@ public class DocumentFactory {
 	public DocumentFactory(Test test, Properties prop) {
 		this.test = test;
 		this.prop = prop;
-		try {
-			pMark = prop.get(Properties.NAMES.VARIANT_NAME, "Variant");
-			pQuestionPunctuation = prop.get(Properties.NAMES.QUESTION_PUNCTUATION, ".");
-			pFQuestionBold = prop.getBoolean(Properties.NAMES.F_QUESTION_BOLD, false);			
-			pAnswerPuncuation = prop.get(NAMES.ANSWER_PUNCTUATION, ")");
-			pQuestionSpacing = prop.getBoolean(Properties.NAMES.F_QUESTION_SPACING, false);
-		}catch (Exception e) {
-			e.printStackTrace();
-			return;
-		}
+		
+		pMark = prop.get(Properties.NAMES.VARIANT_NAME, "Variant");
+		pQuestionPunctuation = prop.get(Properties.NAMES.QUESTION_PUNCTUATION, ".");
+		pFQuestionBold = prop.getBoolean(Properties.NAMES.F_QUESTION_BOLD, false);			
+		pAnswerPuncuation = prop.get(NAMES.ANSWER_PUNCTUATION, ")");	
+		pQuestionSpacing = prop.getBoolean(Properties.NAMES.F_QUESTION_SPACING, false);
+		
 		createDocument();
 	}
 
@@ -128,12 +125,9 @@ public class DocumentFactory {
 						answerRun.addBreak();
 					}	
 				}
-			}			
-			
-			
+			}						
 		}
 	}
-
 	
 	public void setSingleLineSpacing(XWPFParagraph para) {
 	    CTPPr ppr = para.getCTP().getPPr();
@@ -144,8 +138,4 @@ public class DocumentFactory {
 	    spacing.setLineRule(STLineSpacingRule.AUTO);
 	    spacing.setLine(BigInteger.valueOf(240));
 	}
-
-	
-	
-
 }

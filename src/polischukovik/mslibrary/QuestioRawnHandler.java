@@ -97,14 +97,14 @@ public class QuestioRawnHandler {
 		prop = prop2;
 		
 		if(prop == null){
-			Properties.loadDefaultProperties();
-			}
+			return null;
+		}
 			
-			try{
-			sourceFile = new Scanner(new File(filePath));
-			while(sourceFile.hasNext()){
-				questionData += sourceFile.nextLine() + "\n";
-			}
+		try{
+		sourceFile = new Scanner(new File(filePath));
+		while(sourceFile.hasNext()){
+			questionData += sourceFile.nextLine() + "\n";
+		}
 		}catch(Exception e){
 			throw new IllegalArgumentException("Unable to read source file: " + filePath + "\n" +  e.getMessage());
 		}		

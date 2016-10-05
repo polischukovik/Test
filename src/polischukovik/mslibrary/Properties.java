@@ -42,27 +42,24 @@ public class Properties {
 		properties.put(nameEnum, value);
 	}
 
-	public String get(NAMES nameEnum, String defaultVal) throws InvalidAttributesException{	
+	public String get(NAMES nameEnum, String defaultVal){	
 		String value = properties.get(nameEnum);
 		
-		if(value == null) throw new InvalidAttributesException(String.format("Option [%s] value not found.", nameEnum.toString()));
+		if(value == null) {
+			value = defaultVal;
+			//logging.err -> InvalidAttributesException(String.format("Option [%s] value not found.", nameEnum.toString()));
+		}
 		
-		return value;
-		
-	}
-
-	public static void loadDefaultProperties() {
-		// TODO Auto-generated method stub
-		
+		return value;		
 	}
 	
-	public boolean getBoolean(Properties.NAMES prop, boolean defaultVal) throws InvalidAttributesException{
+	public boolean getBoolean(Properties.NAMES prop, boolean defaultVal){
 		String param = this.properties.get(prop);
-		boolean pBool = false;
+		boolean pBool = defaultVal;
 		if(param.toLowerCase().equals("y") || (param.toLowerCase().equals("n"))){
 			pBool = "y".equals(param.toLowerCase());
 		}else{
-			throw new IllegalArgumentException(String.format("Cannot convert [%s] to boolean(y/n are permited)", prop.toString()));
+			//logging.err -> IllegalArgumentException(String.format("Cannot convert [%s] to boolean(y/n are permited)", prop.toString()));
 		}
 		return pBool;
 		

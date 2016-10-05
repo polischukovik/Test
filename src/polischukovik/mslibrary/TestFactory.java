@@ -21,24 +21,15 @@ public class TestFactory {
 	private int pVariants;
 
 	public TestFactory(Set<QuestionRaw> questions) {
-		this.questions = questions;
+		this.questions = questions;		
 	}
 
 	public Test createTests(Properties prop) {
 		TestFactory.prop = prop;
-		try {
-			pTestName = TestFactory.prop.get(Properties.NAMES.TEST_NAME, "Test name default");
-			pVariants = Integer.valueOf(TestFactory.prop.get(Properties.NAMES.VARIANTS, "2"));
-		}catch (NumberFormatException e) {
-			System.err.println("ERROR: Failed to convert property to numeric");
-			return null;
-		} 
-		catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
 		
-		
+		pTestName = TestFactory.prop.get(Properties.NAMES.TEST_NAME, "Test name default");
+		pVariants = Integer.valueOf(TestFactory.prop.get(Properties.NAMES.VARIANTS, "2"));
+				
 		Test test = new Test(pTestName);
 		List<QuestionRaw> sorted = new ArrayList<>(questions);
 		/*

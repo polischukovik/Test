@@ -66,7 +66,7 @@ public class Numerator {
 	}
 	
 	private String nextLetter() {
-		int first = 97;
+		int first = 96;
 		++cnt;
 		
 		return String.valueOf(Character.toChars(first + cnt));
