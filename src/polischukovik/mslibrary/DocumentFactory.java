@@ -38,58 +38,67 @@ public class DocumentFactory {
 	public XWPFDocument createDocument(){
 		doc = new XWPFDocument();
 		
-		addTite(test.getCaption());
+		addDocumentTite();
 		addVariants();		
 		
 		return doc;
 	}
 
-	private void addTite(String string) {
+	private void addDocumentTite() {
 		XWPFParagraph p = doc.createParagraph();
+		p.setAlignment(ParagraphAlignment.CENTER);
 		XWPFRun r = p.createRun();
+		r.addBreak();
+		r.addBreak();
+		r.addBreak();
+		r.addBreak();
+		r.setText(test.getCaption());		
+		r.addBreak();
+	}
+	
+	private void addVariantCaption(Variant v) {
+		XWPFParagraph p0 = doc.createParagraph();
+		XWPFRun r0 = p0.createRun();
+		p0.setAlignment(ParagraphAlignment.CENTER);
+		p0.setPageBreak(true);
 		
-		r.setText(string);
-		r.addBreak(BreakType.PAGE);
+		String v_label = v.getName();
+		String v_mark = prop.get(Properties.NAMES.VARIANT_NAME);
+		r0.setText(String.format("%s %s", v_mark, v_label));
+		r0.setBold(true);
 	}
 
 	private void addVariants() {
-		List<Variant> variants = test.getVariants();
-		
+		List<Variant> variants = test.getVariants();		
 		
 		for(Variant v : variants){
-			XWPFParagraph p = doc.createParagraph();
-			XWPFRun r = p.createRun();
-			//Create Variant caption			
-			p.setAlignment(ParagraphAlignment.CENTER);
-			r.setText(v.getName());
-			
+			addVariantCaption(v);
+						
 			List<Question> questions = v.getQuestions();
 			for(Question q : questions){
-				XWPFParagraph pv = doc.createParagraph();
-				XWPFRun rv = p.createRun();
-				pv = doc.createParagraph();
-				rv = p.createRun();
+				XWPFParagraph questionParagpaph = doc.createParagraph();
+				questionParagpaph.setAlignment(ParagraphAlignment.CENTER);
+				//questionParagpaph.setPageBreak(true);
 				
-				List<Answer> answers = q.getAnswers();
+				XWPFRun questionRun = questionParagpaph.createRun();
+							
+				questionRun.setText(String.format("%s%s %s",q.getId(), prop.get(NAMES.QUESTION_PUNCTUATION), q.getQuestion()));
 				
-				rv.setText(String.format("%s%s\t%s",q.getId(), prop.get(NAMES.QUESTION_PUNCTUATION), q.getQuestion()));
+				List<Answer> answers = q.getAnswers();		
+				XWPFParagraph answerParagraph = doc.createParagraph();
 				
 				for(Answer a : answers){
-					XWPFParagraph pa = doc.createParagraph();
-					XWPFRun ra = p.createRun();
+					XWPFRun answerRun = answerParagraph.createRun();
 					
-					pa = doc.createParagraph();
-					ra = p.createRun();
-					
-					ra.setText(String.format("%s%s\t%s",a.getLabel(), prop.get(NAMES.ANSWER_PUNCTUATION), a.getAnswer()));
+					answerRun.setText(String.format("%s%s %s", a.getLabel(), prop.get(NAMES.ANSWER_PUNCTUATION), a.getAnswer()));
+					answerRun.addBreak();
 				}
 			}			
 			
-			//get last run and add page break to indicte end of vatiant
-			p.createRun().addBreak(BreakType.PAGE);			
 			
 		}
 	}
+
 	
 	
 

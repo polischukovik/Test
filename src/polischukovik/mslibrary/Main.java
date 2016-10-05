@@ -31,7 +31,8 @@ public class Main {
 	//output
 	private static final String FILENAME = "tests.docx";
 	//test name
-	private static final String TEST_NAME = "Тести для групи продовженого дня ЫИПРАТ";
+	private static final String TEST_NAME = "РќР°Р·РІР° С‚РµСЃС‚Сѓ";
+	private static final String VARIANT_NAME = "Variant";
 	
 	private static Set<QuestionRaw> questions;
 	
@@ -48,51 +49,72 @@ public class Main {
 		prop.add(Properties.NAMES.TEST_NAME, TEST_NAME);
 		prop.add(Properties.NAMES.ANSWER_PUNCTUATION, ANSWER_PUNCTUATION);
 		prop.add(Properties.NAMES.QUESTION_PUNCTUATION, QUESTION_PUNCTUATION);
+		prop.add(Properties.NAMES.VARIANT_NAME, VARIANT_NAME);
 		
 	
 		questions = QuestioRawnHandler.parseSource(sourceFilePath, prop);
 		
-//		TestFactory tf = new TestFactory(questions);
-//		 
-//		Test test = tf.createTests(prop);
-//		
-//		DocumentFactory df = new DocumentFactory(test, prop);
+		TestFactory tf = new TestFactory(questions);
+		 
+		Test test = tf.createTests(prop);
+		
+		DocumentFactory df = new DocumentFactory(test, prop);
 //
 
 		try(OutputStream os = new FileOutputStream(new File("file.docx"))){
 		
-		//df.write(os);
-		XWPFDocument doc = new XWPFDocument();
-		
-		XWPFParagraph p = doc.createParagraph();
-		p.setAlignment(ParagraphAlignment.CENTER);
-		XWPFRun r = p.createRun();
-		r.addBreak();
-		r.addBreak();
-		r.addBreak();
-		r.addBreak();
-		r.setText("\n\n\n\n\nDocument caption");		
-		r.addBreak();		
-
-		r.addBreak(BreakType.PAGE);
-		//////////////////////////
-		XWPFParagraph p0 = doc.createParagraph();
-		XWPFRun r0 = p0.createRun();
-		p0.setAlignment(ParagraphAlignment.CENTER);
-		
-		String v_label = "II";
-		String v_mark = "Variant";
-		r0.setText(String.format("%s %s", v_mark, v_label));
-		r0.setBold(true);
-		/////////////////////////
-		XWPFParagraph p1 = doc.createParagraph();
-		XWPFRun r1 = p1.createRun();
-		
-		String q_label = "1";
-		String question = "What is your question?";
-		r1.setText("What is your question?");
-		
-		doc.write(os);
+			df.write(os);
+//			XWPFDocument doc = new XWPFDocument();
+//			
+//			XWPFParagraph p = doc.createParagraph();
+//			p.setAlignment(ParagraphAlignment.CENTER);
+//			XWPFRun r = p.createRun();
+//			r.addBreak();
+//			r.addBreak();
+//			r.addBreak();
+//			r.addBreak();
+//			r.setText(TEST_NAME);		
+//			r.addBreak();		
+//			
+//			//r.addBreak(BreakType.PAGE);
+//			
+//			//////////////////////////
+//			//createVariantTitle(doc);
+//			/////////////////////////
+//			XWPFParagraph p1 = doc.createParagraph();
+//			XWPFRun r1 = p1.createRun();
+//			p1.setPageBreak(true);
+//			
+//			String q_label = "1";
+//			String question = "What is your question?";
+//			r1.setText(String.format("%s%s %s", q_label, ".", question));
+//			
+//			XWPFParagraph p3 = doc.createParagraph();
+//			XWPFRun r3 = p3.createRun();
+//			
+//			String l_num = "1";
+//			String l_answ = "Yes";
+//			r3.setText(String.format("%s%s %s", l_num, ")", l_answ));
+//			r3.addBreak();
+//			
+//			//XWPFParagraph p4 = doc.createParagraph();
+//			XWPFRun r4 = p3.createRun();
+//			
+//			String l_num1 = "2";
+//			String l_answ1 = "No";
+//			r4.setText(String.format("%s%s %s", l_num1, ")", l_answ1));
+//			r4.addBreak();
+//			///////
+//			
+//			XWPFParagraph p2 = doc.createParagraph();
+//			XWPFRun r2 = p2.createRun();
+//			//p2.setPageBreak(false);
+//			
+//			String q_label2 = "2";
+//			String question2 = "What is your question?";
+//			r2.setText(String.format("%s%s %s", q_label2, ".", question2));
+//			
+//			doc.write(os);
 		}catch(Exception e){
 			System.err.println("Error occured");
 			e.printStackTrace();
@@ -101,6 +123,8 @@ public class Main {
 		System.err.println("done");
 	
 	}
+
+	
 
 
 }
