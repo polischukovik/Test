@@ -5,15 +5,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
-import java.util.Set;
-
-import polischukovik.domain.Question;
 import polischukovik.domain.QuestionRaw;
 import polischukovik.domain.Test;
 import polischukovik.domain.enums.PropertyNames;
+import polischukovik.msformating.SimpleDocumentFactoryImpl;
+import polischukovik.services.QuestioRawnHandler;
 import polischukovik.services.TestFactory;
 
 public class Main{
+	
+	public static Properties prop;
 	
 	private static final String ANSWER_PUNCTUATION = ")";
 	private static final String QUESTION_PUNCTUATION = ".";
@@ -23,8 +24,6 @@ public class Main{
 	private static final int QUESTIONS = 30;
 	//Question mark
 	private static final String MARK = "&";
-	//Flag to mix answers. Default true
-	private static final boolean MIX_ANSWERS = true;
 	//output
 	private static final String FILENAME = "tests.docx";
 	//test name
@@ -39,14 +38,15 @@ public class Main{
 	private static final String SHUFFLE_ANSWERS = "y";
 	private static final String T_KEY_TITLE = "Ключі";
 
-	
-	private static List<QuestionRaw> questions;
+	private static QuestioRawnHandler questionRawHandler;
+	private static TestFactory testFactory;
+	private static SimpleDocumentFactoryImpl documentFactory;
 	
 	//C:\Users\opolishc\workspaceNeon\ms-document-testimg
 	private static String sourceFilePath = "source_.txt";
 
 	public static void main(String[] args) throws IOException {
-		Properties prop = new Properties();
+		prop = new Properties();
 		prop.add(PropertyNames.PARSING_MARK_QUESTION, MARK);
 		prop.add(PropertyNames.BASIC_VARIANTS, String.valueOf(VARIANTS));
 		prop.add(PropertyNames.BASIC_QUESTIONS, String.valueOf(QUESTIONS));
@@ -64,22 +64,23 @@ public class Main{
 		prop.add(PropertyNames.SHUFFLE_QUESTION, SHUFFLE_QUESTIONS);
 		prop.add(PropertyNames.RES_KEY_TITLE, T_KEY_TITLE);
 	
-		questions = QuestioRawnHandlerImpl.parseSource(sourceFilePath, prop);
+		questionRawHandler = new QuestioRawnHandlerImpl();
+		List<QuestionRaw> questions = questionRawHandler.parseSource(sourceFilePath, prop);
 		
-		TestFactory tf = new TestFactoryImpl(questions);
+		testFactory = new TestFactoryImpl(questions);
 		 
-		Test test = tf.createTest(prop);
+		Test test = testFactory.createTest(prop);
 		
 		if(test == null){
 			System.err.println("Failed to generate test. Exiting");
 			return;
 		}		
 
-		DocumentFactory df = new DocumentFactory(test, prop);
+		documentFactory = new SimpleDocumentFactoryImpl(test, prop);
 
 		try(OutputStream os = new FileOutputStream(new File("file.docx"))){
 		
-			df.write(os);
+			documentFactory.write(os);
 
 		}catch(Exception e){
 			System.err.println("Error occured");

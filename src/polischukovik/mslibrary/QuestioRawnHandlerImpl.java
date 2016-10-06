@@ -24,7 +24,7 @@ public class QuestioRawnHandlerImpl implements QuestioRawnHandler{
 	
 	private static Properties prop;
 
-	private QuestioRawnHandlerImpl() {
+	QuestioRawnHandlerImpl() {
 		
 	}
 
