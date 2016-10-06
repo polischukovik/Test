@@ -1,20 +1,20 @@
 package polischukovik.domain;
 
-import polischukovik.domain.Question.TYPE;
+import polischukovik.domain.enums.QuestionType;
 
 public class QuestionRaw {
-	private Question.TYPE type;
+	private QuestionType type;
 	private String question;
 	private String[] answers;
 	private Integer[] correct;
-	public QuestionRaw(TYPE type, String question, String[] answers, Integer[] correct) {
+	public QuestionRaw(QuestionType type, String question, String[] answers, Integer[] correct) {
 		super();
 		this.type = type;
 		this.question = question;
 		this.answers = answers;
 		this.correct = correct;
 	}
-	public Question.TYPE getType() {
+	public QuestionType getType() {
 		return type;
 	}
 	public String getQuestion() {
@@ -26,7 +26,4 @@ public class QuestionRaw {
 	public Integer[] getCorrect() {
 		return correct;
 	}
-	
-	
-
 }

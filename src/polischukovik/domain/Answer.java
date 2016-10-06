@@ -1,17 +1,15 @@
 package polischukovik.domain;
 
-public class Answer {
-	
-	private String answer;
-	//private boolean isCorrect;
+public class Answer {	
 	private String label;
+	private String answer;
+	private boolean isCorrect;
 	
-//	public Answer(String answer, boolean isCorrect, String label) {
-	public Answer(String label, String answer) {
+	public Answer(String label, String answer, boolean isCorrect) {
 		super();
-		this.answer = answer;
-		//this.isCorrect = isCorrect;
 		this.label = label;
+		this.answer = answer;
+		this.isCorrect = isCorrect;
 	}
 
 	public String getAnswer() {
@@ -21,8 +19,8 @@ public class Answer {
 	public String getLabel() {
 		return label;
 	}
-	
-	
-	
-	
+
+	public boolean isCorrect() {
+		return isCorrect;
+	}
 }

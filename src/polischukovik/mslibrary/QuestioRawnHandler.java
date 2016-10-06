@@ -2,13 +2,12 @@ package polischukovik.mslibrary;
 
 import java.io.File;
 import java.util.Scanner;
-import java.util.Set;
-
-import polischukovik.domain.Question;
 import polischukovik.domain.QuestionRaw;
+import polischukovik.domain.enums.PropertyNames;
+import polischukovik.domain.enums.QuestionType;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.List;
 
 /*
  * QuestionHandler responds for:
@@ -35,10 +34,10 @@ public class QuestioRawnHandler {
 		}
 	}
 	
-	public static void processRawData(Set<QuestionRaw> questions){	
+	public static void processRawData(List<QuestionRaw> questions){	
 		String pMark;
 		try {
-			pMark = prop.get(Properties.NAMES.MARK, "&");
+			pMark = prop.get(PropertyNames.PARSING_MARK_QUESTION, "&");
 		}catch (Exception e) {
 			e.printStackTrace();
 			return;
@@ -86,13 +85,13 @@ public class QuestioRawnHandler {
 			for(int j = 0; j < a.length; j++){
 				a[j] = a[j].trim();
 			}
-			questions.add(new QuestionRaw(Question.TYPE.SINGLE_ANSWER, q, a, correctAnswerId));
+			questions.add(new QuestionRaw(QuestionType.SINGLE_ANSWER, q, a, correctAnswerId));
 		}
 		
 		System.err.println();
 	}
 
-	public static Set<QuestionRaw> parseSource(String sourceFilePath, Properties prop2) {
+	public static List<QuestionRaw> parseSource(String sourceFilePath, Properties prop2) {
 		filePath = sourceFilePath;		
 		prop = prop2;
 		
@@ -108,7 +107,7 @@ public class QuestioRawnHandler {
 		}catch(Exception e){
 			throw new IllegalArgumentException("Unable to read source file: " + filePath + "\n" +  e.getMessage());
 		}		
-		Set<QuestionRaw> questions = new HashSet<>();
+		List<QuestionRaw> questions = new ArrayList<>();
 		
 		verifySource();
 		processRawData(questions);

@@ -2,17 +2,13 @@ package polischukovik.mslibrary;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
-import javax.naming.directory.InvalidAttributesException;
-
-import polischukovik.mslibrary.Numerator.TYPE;
+import polischukovik.domain.enums.NumeratorType;
+import polischukovik.domain.enums.PropertyNames;
 
 public class Properties {
-	
-	public static enum NAMES {VARIANTS,QUESTIONS,MARK,MIX_ANSWERS, OUTPUT_FILE_NAME, TEST_NAME, QUESTION_PUNCTUATION, ANSWER_PUNCTUATION, VARIANT_NAME, F_QUESTION_BOLD, F_QUESTION_SPACING, P_VARIANT_NUMERATION, P_QUESTION_NUMERATION, P_ANSWER_NUMERATION, SHUFFLE_QUESTION, SHUFFLE_ANSWERS};
 
-	private Map<NAMES, String> properties;
+	private Map<PropertyNames, String> properties;
 //	private final static TreeMap<String, NAMES> namingMap = new TreeMap<>();
 //	
 //	static{
@@ -38,11 +34,11 @@ public class Properties {
 		this.properties = new HashMap<>();
 	}
 
-	public void add(NAMES nameEnum, String value){
+	public void add(PropertyNames nameEnum, String value){
 		properties.put(nameEnum, value);
 	}
 
-	public String get(NAMES nameEnum, String defaultVal){	
+	public String get(PropertyNames nameEnum, String defaultVal){	
 		String value = properties.get(nameEnum);
 		
 		if(value == null) {
@@ -53,7 +49,7 @@ public class Properties {
 		return value;		
 	}
 	
-	public boolean getBoolean(Properties.NAMES prop, boolean defaultVal){
+	public boolean getBoolean(PropertyNames prop, boolean defaultVal){
 		String param = this.properties.get(prop);
 		boolean pBool = defaultVal;
 		if(param.toLowerCase().equals("y") || (param.toLowerCase().equals("n"))){
@@ -63,5 +59,27 @@ public class Properties {
 		}
 		return pBool;
 		
+	}
+	
+	public NumeratorType getNumerationStyle(PropertyNames property, NumeratorType defaultStyle) {
+		NumeratorType numStyle = defaultStyle; //DEFAULT
+//		try{
+			String propNumerationStyle = this.get(property, defaultStyle.toString());
+//			if(propNumerationStyle == null){
+//				throw new IllegalArgumentException(String.format("Warning: There is no property %s. Using default",property));
+//			}
+		NumeratorType tmpNumerationStyle = Numerator.valueOf(propNumerationStyle); //throws IllegalArgumentException
+		
+		if(tmpNumerationStyle != null) numStyle = tmpNumerationStyle;
+			
+//		}catch(IllegalArgumentException e){
+//			System.err.println(String.format("Warning: The property %s has inaccepable value. Using default",property));
+//			System.err.println(String.format(" Reason:",e.getMessage()));
+//		}
+//		catch(InvalidAttributesException e){		
+//			System.err.println(String.format("Warning: There is no property %s. Using default",property));
+//			System.err.println(String.format(" Reason:",e.getMessage()));
+//		}
+		return numStyle;
 	}
 }

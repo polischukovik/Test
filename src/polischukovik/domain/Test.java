@@ -1,28 +1,15 @@
 package polischukovik.domain;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class Test {
 	private String caption;
 	private List<Variant> variants;
-	private Set<Question> sourceQuestions;
-	private int variantNumber;
 	
-	public Test(String caption) {
+	public Test(String caption, List<Variant> variants) {
 		super();
 		this.caption = caption;
-		this.variantNumber = 0;
-		this.variants = new ArrayList<>();
-	}
-	
-	/*
-	 * Adds variant to the test
-	 */
-	public void add(Variant variant){
-		variants.add(variant);
-		++variantNumber;
+		this.variants = variants;
 	}
 
 	public String getCaption() {
@@ -34,5 +21,4 @@ public class Test {
 	}
 	
 	
-
 }

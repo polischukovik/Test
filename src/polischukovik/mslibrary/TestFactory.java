@@ -1,84 +1,146 @@
 package polischukovik.mslibrary;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
-import java.util.Set;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 
-import javax.naming.directory.InvalidAttributesException;
-
+import polischukovik.domain.Answer;
+import polischukovik.domain.Question;
 import polischukovik.domain.QuestionRaw;
 import polischukovik.domain.Test;
 import polischukovik.domain.Variant;
-import polischukovik.mslibrary.Numerator.TYPE;
+import polischukovik.domain.enums.NumeratorType;
+import polischukovik.domain.enums.PropertyNames;
 
 public class TestFactory {
-	Set<QuestionRaw> questions;
+	
+	private List<QuestionRaw> questions;
 	private static Properties prop;
 	
 	private int pVariants;
 	private String pTestName;	
 	private boolean pShuffleQuestions;
+	private NumeratorType pQuestionNumStyle;
+	private NumeratorType pAnswerNumStyle;
+	private NumeratorType pVariantNumStyle; 
+	private int pQuestions;
+	private boolean pShuffleAnswers;
+	
+	private Random rnd;
 
-	public TestFactory(Set<QuestionRaw> questions) {
-		this.questions = questions;		
+	public TestFactory(List<QuestionRaw> questions) {
+		this.questions = questions;	
 	}
 
-	public Test createTests(Properties prop) {
+	public Test createTest(Properties prop) {
 		TestFactory.prop = prop;
 		
-		pTestName = TestFactory.prop.get(Properties.NAMES.TEST_NAME, "Test name default");
-		pVariants = Integer.valueOf(TestFactory.prop.get(Properties.NAMES.VARIANTS, "2"));
+		/*
+		 * Read properties
+		 */
+		pTestName = TestFactory.getProperties().get(PropertyNames.RES_TEST_NAME, "Test name default");
+		pVariants = Integer.valueOf(TestFactory.getProperties().get(PropertyNames.BASIC_VARIANTS, "2"));
+		pQuestions = Integer.valueOf(TestFactory.getProperties().get(PropertyNames.BASIC_QUESTIONS, "30"));		
+		pShuffleQuestions = TestFactory.getProperties().getBoolean(PropertyNames.SHUFFLE_QUESTION, true);
+		pShuffleAnswers = TestFactory.getProperties().getBoolean(PropertyNames.SHUFFLE_ANSWERS, true);
+		pVariantNumStyle = TestFactory.getProperties().getNumerationStyle(PropertyNames.S_NUMERATION_VARIANT, NumeratorType.ROMAN);
+		pQuestionNumStyle = TestFactory.getProperties().getNumerationStyle(PropertyNames.S_NUMERATION_QUESTION, NumeratorType.NUMERIC);
+		pAnswerNumStyle = TestFactory.getProperties().getNumerationStyle( PropertyNames.S_ANSWER_NUMERATION, NumeratorType.ALPHABETIC);
+						
+		if(pShuffleQuestions || pShuffleAnswers){
+			rnd = new Random(System.nanoTime());
+		}		
+		
+		Test test = new Test(pTestName, createVariants());
+		
+		return test;
+	}
 
-		pShuffleQuestions = TestFactory.getProperties().getBoolean(Properties.NAMES.SHUFFLE_QUESTION, true);
-				
-		Test test = new Test(pTestName);
-		List<QuestionRaw> sorted = new ArrayList<>(questions);
+	private List<Variant> createVariants() {
+		List<Variant> variants = new ArrayList<>();
+		
 		/*
 		 * Set variant numeration style
 		 */
-		Numerator nums = new Numerator(getNumerationStyle(Numerator.TYPE.ROMAN, Properties.NAMES.P_VARIANT_NUMERATION));
-		
-		long seed = System.nanoTime();
-		List<QuestionRaw> newVariant = new ArrayList<>(sorted);
-		
-		for(int i = 0; i < pVariants; i++){			
-						
-			if(pShuffleQuestions){
-				Collections.shuffle(newVariant, new Random(seed));
-			}
+		Numerator numsVariant = new Numerator(pVariantNumStyle);
+					
+		for(int i = 0; i < pVariants; i++){
+			List<Question> questionList = createQuestions();
 			
-			Variant v = new Variant(nums.getNext(), newVariant);
-			test.add(v);
+			Variant v = new Variant(numsVariant.getNext(), questionList, createKeys(questionList));			
+			variants.add(v);
 		}
-		return test;
+		
+		return variants;
+	}
+
+	private List<Question> createQuestions() {
+		List<QuestionRaw> sortedQuestions = new ArrayList<>(questions);
+		List<Question> result = new ArrayList<>(); 
+		
+		if(pShuffleQuestions){
+			Collections.shuffle(sortedQuestions, rnd);
+		}
+		
+		/*
+		 * Set question numeration style
+		 */
+		Numerator nums = new Numerator(pQuestionNumStyle);
+		
+		for(int j = 0; (j < pQuestions) && (j < sortedQuestions.size()); j++){
+			List<Answer> answers = createAnswers(sortedQuestions.get(j));
+			
+			Question prep = new Question(nums.getNext(), sortedQuestions.get(j).getType(), sortedQuestions.get(j).getQuestion(), answers);		
+			result.add(prep);
+		}
+		
+		return result;
+	}
+
+	private List<Answer> createAnswers(QuestionRaw questionRaw) {
+		List<Answer> answers = new ArrayList<>();
+		List<String> listAnswer = new ArrayList<>(Arrays.asList(questionRaw.getAnswers()));
+		List<Integer> correctList = Arrays.asList(questionRaw.getCorrect());
+		Map<String, Boolean> answerCorrectMap = new TreeMap<>();//Map to know which answer is correct after shuffle
+
+		for(int i = 0; i < listAnswer.size(); i++){
+			answerCorrectMap.put(listAnswer.get(i), correctList.contains(i));
+		}
+		/*
+		 * Shuffle answers
+		 */
+		if(pShuffleAnswers){
+			Collections.shuffle(listAnswer, rnd);
+		}	
+		
+		/*
+		 * Set answer numeration style
+		 */
+		Numerator answerNums = new Numerator(pAnswerNumStyle);
+		
+		for(String s : listAnswer){
+			answers.add(new Answer(answerNums.getNext(), s, answerCorrectMap.get(s)));
+		}
+		return answers;
+	}
+	
+	private Map<Question, String> createKeys(List<Question> questionList) {
+		Map<Question, String> result = new HashMap<>();
+		for (Question q : questionList) {
+			String answers = q.getAnswers().stream().filter(f -> f.isCorrect()).map(i -> i.getLabel())
+					.collect(Collectors.joining(", "));
+			result.put(q, answers);
+		}
+		return result;
 	}
 	
 	public static Properties getProperties(){
 		return prop;
 	}
-	
-	public static Numerator.TYPE getNumerationStyle(Numerator.TYPE defaultStyle, Properties.NAMES property) {
-		Numerator.TYPE numStyle = defaultStyle; //DEFAULT
-//		try{
-			String propNumerationStyle = TestFactory.getProperties().get(property, defaultStyle.toString());
-//			if(propNumerationStyle == null){
-//				throw new IllegalArgumentException(String.format("Warning: There is no property %s. Using default",property));
-//			}
-		Numerator.TYPE tmpNumerationStyle = Numerator.valueOf(propNumerationStyle); //throws IllegalArgumentException
-		
-		if(tmpNumerationStyle != null) numStyle = tmpNumerationStyle;
-			
-//		}catch(IllegalArgumentException e){
-//			System.err.println(String.format("Warning: The property %s has inaccepable value. Using default",property));
-//			System.err.println(String.format(" Reason:",e.getMessage()));
-//		}
-//		catch(InvalidAttributesException e){		
-//			System.err.println(String.format("Warning: There is no property %s. Using default",property));
-//			System.err.println(String.format(" Reason:",e.getMessage()));
-//		}
-		return numStyle;
-	}
-
 }

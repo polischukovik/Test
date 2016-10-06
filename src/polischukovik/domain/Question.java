@@ -1,27 +1,20 @@
 package polischukovik.domain;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import polischukovik.mslibrary.Numerator;
+import polischukovik.domain.enums.QuestionType;
 
 public class Question {
-	public static enum TYPE {
-		OPEN,
-		SINGLE_ANSWER,
-		MULTI_ANSWER,
-		CORRESPONSANCE
-	}
 	
 	private String id;
-	private TYPE type;
+	private QuestionType type;
 	private String question;
 	private List<Answer> answers;
-	//public Question(int id, TYPE type, String question, String[] answers, int[] correctAnswers) {
-	public Question(String id, TYPE type, String question, List<Answer> answers) {
+	
+	public Question(String id, QuestionType type, String question, List<Answer> answers) {
 		super();
 		this.id = id;
 		this.type = type;
@@ -38,7 +31,7 @@ public class Question {
 	public String getId() {
 		return id;
 	}
-	public TYPE getType() {
+	public QuestionType getType() {
 		return type;
 	}
 	public String getQuestion() {
@@ -48,9 +41,8 @@ public class Question {
 		return answers;
 	}
 
-	
-	
-	
-	
-	
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
 }

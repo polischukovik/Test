@@ -2,21 +2,13 @@ package polischukovik.mslibrary;
 
 import java.util.TreeMap;
 
-import javax.naming.directory.InvalidAttributesException;
-
-import org.apache.poi.ss.usermodel.PrintOrientation;
+import polischukovik.domain.enums.NumeratorType;
 
 public class Numerator {
-	public static enum TYPE {
-		NUMERIC,
-		ALPHABETIC,
-		ALPHABETIC_CAPS,
-		ROMAN
-	}
-	private TYPE type;
+	private NumeratorType type;
 	private int cnt;
 	private final static TreeMap<Integer, String> romanDictMap = new TreeMap<>();
-	private final static TreeMap<String, TYPE> namingMap = new TreeMap<>();
+	private final static TreeMap<String, NumeratorType> namingMap = new TreeMap<>();
 	static {
 
         romanDictMap.put(1000, "M");
@@ -33,13 +25,13 @@ public class Numerator {
         romanDictMap.put(4, "IV");
         romanDictMap.put(1, "I");
         
-        namingMap.put("ROMAN", Numerator.TYPE.ROMAN);
-        namingMap.put("NUMERIC", Numerator.TYPE.NUMERIC);
-        namingMap.put("ALPHABETIC", Numerator.TYPE.ALPHABETIC);
-        namingMap.put("ALPHABETIC_CAPS", Numerator.TYPE.ALPHABETIC_CAPS);	
+        namingMap.put("ROMAN", NumeratorType.ROMAN);
+        namingMap.put("NUMERIC",NumeratorType.NUMERIC);
+        namingMap.put("ALPHABETIC", NumeratorType.ALPHABETIC);
+        namingMap.put("ALPHABETIC_CAPS", NumeratorType.ALPHABETIC_CAPS);	
     }
 	
-	public Numerator(TYPE type) {
+	public Numerator(NumeratorType type) {
 		super();
 		this.type = type;
 		cnt = 0;
@@ -84,8 +76,8 @@ public class Numerator {
         return romanDictMap.get(l) + toRoman(number-l);
     }
     
-    public static TYPE valueOf(String str)  { 
-    	TYPE type = namingMap.get(str);
+    public static NumeratorType valueOf(String str)  { 
+    	NumeratorType type = namingMap.get(str);
     	
     	if(type == null) return null;// throw new InvalidAttributesException(String.format("Unaccepable value %s.", str));
     	

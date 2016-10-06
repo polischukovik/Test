@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigInteger;
 import java.util.List;
-
-import org.apache.poi.xwpf.usermodel.BreakType;
 import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
@@ -18,7 +16,7 @@ import polischukovik.domain.Answer;
 import polischukovik.domain.Question;
 import polischukovik.domain.Test;
 import polischukovik.domain.Variant;
-import polischukovik.mslibrary.Properties.NAMES;
+import polischukovik.domain.enums.PropertyNames;
 
 public class DocumentFactory {
 	private Test test;
@@ -35,11 +33,11 @@ public class DocumentFactory {
 		this.test = test;
 		this.prop = prop;
 		
-		pMark = prop.get(Properties.NAMES.VARIANT_NAME, "Variant");
-		pQuestionPunctuation = prop.get(Properties.NAMES.QUESTION_PUNCTUATION, ".");
-		pFQuestionBold = prop.getBoolean(Properties.NAMES.F_QUESTION_BOLD, false);			
-		pAnswerPuncuation = prop.get(NAMES.ANSWER_PUNCTUATION, ")");	
-		pQuestionSpacing = prop.getBoolean(Properties.NAMES.F_QUESTION_SPACING, false);
+		pMark = prop.get(PropertyNames.RES_VARIANT_NAME, "Variant");
+		pQuestionPunctuation = prop.get(PropertyNames.P_PUNCTUATION_QUESTION, ".");
+		pFQuestionBold = prop.getBoolean(PropertyNames.F_QUESTION_BOLD, false);			
+		pAnswerPuncuation = prop.get(PropertyNames.P_PUNCTUATION_ANSWER, ")");	
+		pQuestionSpacing = prop.getBoolean(PropertyNames.F_QUESTION_SPACING, false);
 		
 		createDocument();
 	}
@@ -57,6 +55,7 @@ public class DocumentFactory {
 		
 		addDocumentTite();
 		addVariants();		
+		addKeys();
 		
 		return doc;
 	}
@@ -127,9 +126,37 @@ public class DocumentFactory {
 				}
 			}						
 		}
+	}	
+
+	private void addKeys() {
+		//Add title
+		XWPFParagraph p = doc.createParagraph();
+		p.setAlignment(ParagraphAlignment.CENTER);
+		p.setPageBreak(true);
+		XWPFRun r = p.createRun();
+		
+		r.setText(prop.get(PropertyNames.RES_KEY_TITLE, "Key title"));
+		
+		//Add keys for each variants
+		for(Variant v : test.getVariants()){
+			XWPFParagraph pVariant = doc.createParagraph();
+			XWPFRun rVariant = pVariant.createRun();
+			
+			rVariant.setText(String.format("%s", v.getName()));
+			
+			XWPFParagraph pQuestion = doc.createParagraph();
+			
+			//Create row for each answer
+			for(Question q : v.getQuestions()){
+				XWPFRun rQuestion = pQuestion.createRun();
+				
+				rQuestion.setText(String.format("%s %s %s", q.getId(), prop.get(PropertyNames.P_PUNCTUATION_KEY_ANSWER, "-"), v.getKeys().get(q)));
+				rQuestion.addBreak();
+			}
+		}
 	}
 	
-	public void setSingleLineSpacing(XWPFParagraph para) {
+	private void setSingleLineSpacing(XWPFParagraph para) {
 	    CTPPr ppr = para.getCTP().getPPr();
 	    if (ppr == null) ppr = para.getCTP().addNewPPr();
 	    CTSpacing spacing = ppr.isSetSpacing()? ppr.getSpacing() : ppr.addNewSpacing();
