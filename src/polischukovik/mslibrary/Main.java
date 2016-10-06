@@ -11,8 +11,9 @@ import polischukovik.domain.Question;
 import polischukovik.domain.QuestionRaw;
 import polischukovik.domain.Test;
 import polischukovik.domain.enums.PropertyNames;
+import polischukovik.services.TestFactory;
 
-public class Main {
+public class Main{
 	
 	private static final String ANSWER_PUNCTUATION = ")";
 	private static final String QUESTION_PUNCTUATION = ".";
@@ -63,9 +64,9 @@ public class Main {
 		prop.add(PropertyNames.SHUFFLE_QUESTION, SHUFFLE_QUESTIONS);
 		prop.add(PropertyNames.RES_KEY_TITLE, T_KEY_TITLE);
 	
-		questions = QuestioRawnHandler.parseSource(sourceFilePath, prop);
+		questions = QuestioRawnHandlerImpl.parseSource(sourceFilePath, prop);
 		
-		TestFactory tf = new TestFactory(questions);
+		TestFactory tf = new TestFactoryImpl(questions);
 		 
 		Test test = tf.createTest(prop);
 		

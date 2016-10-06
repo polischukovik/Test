@@ -5,6 +5,7 @@ import java.util.Scanner;
 import polischukovik.domain.QuestionRaw;
 import polischukovik.domain.enums.PropertyNames;
 import polischukovik.domain.enums.QuestionType;
+import polischukovik.services.QuestioRawnHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
  * 		verifying it's integrity
  * 		parsing results into Question class
  */
-public class QuestioRawnHandler {
+public class QuestioRawnHandlerImpl implements QuestioRawnHandler{
 	private static String filePath;
 	//TODO change access to nio
 	private static Scanner sourceFile;
@@ -23,7 +24,7 @@ public class QuestioRawnHandler {
 	
 	private static Properties prop;
 
-	private QuestioRawnHandler() {
+	private QuestioRawnHandlerImpl() {
 		
 	}
 
@@ -34,7 +35,7 @@ public class QuestioRawnHandler {
 		}
 	}
 	
-	public static void processRawData(List<QuestionRaw> questions){	
+	private static void processRawData(List<QuestionRaw> questions){	
 		String pMark;
 		try {
 			pMark = prop.get(PropertyNames.PARSING_MARK_QUESTION, "&");
@@ -91,9 +92,9 @@ public class QuestioRawnHandler {
 		System.err.println();
 	}
 
-	public static List<QuestionRaw> parseSource(String sourceFilePath, Properties prop2) {
+	public List<QuestionRaw> parseSource(String sourceFilePath, Properties prop) {
 		filePath = sourceFilePath;		
-		prop = prop2;
+		QuestioRawnHandlerImpl.prop = prop;
 		
 		if(prop == null){
 			return null;

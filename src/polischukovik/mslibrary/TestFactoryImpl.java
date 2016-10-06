@@ -17,8 +17,9 @@ import polischukovik.domain.Test;
 import polischukovik.domain.Variant;
 import polischukovik.domain.enums.NumeratorType;
 import polischukovik.domain.enums.PropertyNames;
+import polischukovik.services.TestFactory;
 
-public class TestFactory {
+public class TestFactoryImpl implements TestFactory {
 	
 	private List<QuestionRaw> questions;
 	private static Properties prop;
@@ -34,24 +35,24 @@ public class TestFactory {
 	
 	private Random rnd;
 
-	public TestFactory(List<QuestionRaw> questions) {
+	public TestFactoryImpl(List<QuestionRaw> questions) {
 		this.questions = questions;	
 	}
 
 	public Test createTest(Properties prop) {
-		TestFactory.prop = prop;
+		TestFactoryImpl.prop = prop;
 		
 		/*
 		 * Read properties
 		 */
-		pTestName = TestFactory.getProperties().get(PropertyNames.RES_TEST_NAME, "Test name default");
-		pVariants = Integer.valueOf(TestFactory.getProperties().get(PropertyNames.BASIC_VARIANTS, "2"));
-		pQuestions = Integer.valueOf(TestFactory.getProperties().get(PropertyNames.BASIC_QUESTIONS, "30"));		
-		pShuffleQuestions = TestFactory.getProperties().getBoolean(PropertyNames.SHUFFLE_QUESTION, true);
-		pShuffleAnswers = TestFactory.getProperties().getBoolean(PropertyNames.SHUFFLE_ANSWERS, true);
-		pVariantNumStyle = TestFactory.getProperties().getNumerationStyle(PropertyNames.S_NUMERATION_VARIANT, NumeratorType.ROMAN);
-		pQuestionNumStyle = TestFactory.getProperties().getNumerationStyle(PropertyNames.S_NUMERATION_QUESTION, NumeratorType.NUMERIC);
-		pAnswerNumStyle = TestFactory.getProperties().getNumerationStyle( PropertyNames.S_ANSWER_NUMERATION, NumeratorType.ALPHABETIC);
+		pTestName = TestFactoryImpl.getProperties().get(PropertyNames.RES_TEST_NAME, "Test name default");
+		pVariants = Integer.valueOf(TestFactoryImpl.getProperties().get(PropertyNames.BASIC_VARIANTS, "2"));
+		pQuestions = Integer.valueOf(TestFactoryImpl.getProperties().get(PropertyNames.BASIC_QUESTIONS, "30"));		
+		pShuffleQuestions = TestFactoryImpl.getProperties().getBoolean(PropertyNames.SHUFFLE_QUESTION, true);
+		pShuffleAnswers = TestFactoryImpl.getProperties().getBoolean(PropertyNames.SHUFFLE_ANSWERS, true);
+		pVariantNumStyle = TestFactoryImpl.getProperties().getNumerationStyle(PropertyNames.S_NUMERATION_VARIANT, NumeratorType.ROMAN);
+		pQuestionNumStyle = TestFactoryImpl.getProperties().getNumerationStyle(PropertyNames.S_NUMERATION_QUESTION, NumeratorType.NUMERIC);
+		pAnswerNumStyle = TestFactoryImpl.getProperties().getNumerationStyle( PropertyNames.S_ANSWER_NUMERATION, NumeratorType.ALPHABETIC);
 						
 		if(pShuffleQuestions || pShuffleAnswers){
 			rnd = new Random(System.nanoTime());
